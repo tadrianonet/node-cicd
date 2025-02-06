@@ -8,22 +8,40 @@ app.get('/json', (req, res) => {
     res.json({ message: 'Hello, CI/CD!' });
 });
 
-app.get('/', (req, res) => {
-    res.send('Hello, CI/CD!');
+app.post('/json', (req, res) => {
+    res.json({ message: 'Data received!' });
 });
 
-describe('GET /json', () => {
-    it('should return JSON with message "Hello, CI/CD!"', async () => {
-        const response = await request(app).get('/json');
-        expect(response.status).toBe(200);
-        expect(response.body).toEqual({ message: 'Hello, CI/CD!' });
+app.put('/json', (req, res) => {
+    res.json({ message: 'Data updated!' });
+});
+
+app.delete('/json', (req, res) => {
+    res.json({ message: 'Data deleted!' });
+});
+
+describe('API Endpoints', () => {
+    it('GET /json should return Hello, CI/CD!', async () => {
+        const res = await request(app).get('/json');
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toHaveProperty('message', 'Hello, CI/CD!');
     });
-});
 
-describe('GET /', () => {
-    it('should return "Hello, CI/CD!"', async () => {
-        const response = await request(app).get('/');
-        expect(response.status).toBe(200);
-        expect(response.text).toBe('Hello, CI/CD!');
+    it('POST /json should return Data received!', async () => {
+        const res = await request(app).post('/json');
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toHaveProperty('message', 'Data received!');
+    });
+
+    it('PUT /json should return Data updated!', async () => {
+        const res = await request(app).put('/json');
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toHaveProperty('message', 'Data updated!');
+    });
+
+    it('DELETE /json should return Data deleted!', async () => {
+        const res = await request(app).delete('/json');
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toHaveProperty('message', 'Data deleted!');
     });
 });
